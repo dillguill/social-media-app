@@ -7,4 +7,5 @@ app_name = 'feed'
 urlpatterns = [
     path('', views.HomePage.as_view(), name='index'),
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='detail'),
+    path('new/', views.CreateNewPost.as_view(), name='new_post'),
 ]
