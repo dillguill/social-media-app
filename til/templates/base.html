@@ -1,11 +1,12 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Default title in here{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" />
 </head>
 <body>
@@ -27,7 +28,7 @@
         <li>
             <a href="{% url 'feed:new_post' %}" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
             <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-layer-plus"></i></span>
-            <span class="text-sm font-medium">New Post</span>
+            <span class="text-sm font-medium">New post</span>
             </a>
         </li>
         <li>
@@ -66,7 +67,7 @@
         </div>
         <hr>
         <div class="">
-          <!-- TODO: Add the ajax form -->
+          {# TODO: Add the ajax form #}
         </div>
         <hr>
         <div class="ml-auto">
@@ -83,7 +84,11 @@
 {% endif %}
 </div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script src="{% static 'js/main.js' %}"></script>
+
 
 </body>
 </html>
