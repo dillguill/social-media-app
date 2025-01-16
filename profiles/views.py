@@ -6,9 +6,12 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from feed.models import Post
 from followers.models import Follower
 
+from django.shortcuts import render, redirect
+from django.contrib.auth import update_session_auth_hash
+from .forms import UserUpdateForm, PasswordUpdateForm
 
 class ProfileDetailView(DetailView):
-    http_method_names = ["get"]
+    http_method_names = ["get", "post"]
     template_name = "profiles/detail.html"
     model = User
     context_object_name = "user"
@@ -26,7 +29,31 @@ class ProfileDetailView(DetailView):
         context['total_followers'] = Follower.objects.filter(following=user).count()
         if self.request.user.is_authenticated:
             context['you_follow'] = Follower.objects.filter(following=user, followed_by=self.request.user).exists()
+        context['user_update_form'] = UserUpdateForm(instance=user)
+        context['password_update_form'] = PasswordUpdateForm()
         return context
+
+    def post(self, request, *args, **kwargs):
+        user = self.get_object()
+        if 'update_user' in request.POST:
+            user_update_form = UserUpdateForm(request.POST, instance=user)
+            if user_update_form.is_valid():
+                user_update_form.save()
+                return redirect('profiles:detail', username=user.username)
+        elif 'update_password' in request.POST:
+            password_update_form = PasswordUpdateForm(request.POST)
+            if password_update_form.is_valid():
+                if user.check_password(password_update_form.cleaned_data['old_password']):
+                    user.set_password(password_update_form.cleaned_data['new_password'])
+                    user.save()
+                    update_session_auth_hash(request, user)
+                    return redirect('profiles:detail', username=user.username)
+                else:
+                    password_update_form.add_error('old_password', 'Old password is incorrect')
+        context = self.get_context_data()
+        context['user_update_form'] = user_update_form
+        context['password_update_form'] = password_update_form
+        return self.render_to_response(context)
 
 
 class FollowView(LoginRequiredMixin, View):
