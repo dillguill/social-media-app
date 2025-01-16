@@ -45,23 +45,33 @@
 </div>
 {% if user.is_authenticated %}
 {% if request.user == user %}
+<h2 class="text-2xl font-semibold mb-4">Update Thumbnail</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="space-y-4">
+            {% thumbnail user.profile.image "100x100" crop="center" as im %}
+            <img src="{{ im.url }}" class="rounded-full border-solid border-white border-2 -mt-3">
+            {% endthumbnail %}
+            {{ thumbnail_update_form.as_p }}
+        </div>
+        <button type="submit" name="update_thumbnail" class="mt-4 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-700 transition duration-300">Update Thumbnail</button>
+    </form>
 <h2 class="text-2xl font-semibold mb-4">Update Profile</h2>
-<form method="post" class="mb-8">
-    {% csrf_token %}
-    <div class="space-y-4">
-        {{ user_update_form.as_p }}
-    </div>
-    <button type="submit" name="update_user" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Update Profile</button>
-</form>
-
+    <form method="post" class="mb-8">
+        {% csrf_token %}
+        <div class="space-y-4">
+            {{ user_update_form.as_p }}
+        </div>
+        <button type="submit" name="update_user" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300">Update Profile</button>
+    </form>
 <h2 class="text-2xl font-semibold mb-4">Change Password</h2>
-<form method="post">
-    {% csrf_token %}
-    <div class="space-y-4">
-        {{ password_update_form.as_p }}
-    </div>
-    <button type="submit" name="update_password" class="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-300">Change Password</button>
-</form>
+    <form method="post">
+        {% csrf_token %}
+        <div class="space-y-4">
+            {{ password_update_form.as_p }}
+        </div>
+        <button type="submit" name="update_password" class="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 transition duration-300">Change Password</button>
+    </form>
 {% endif %}
 {% endif %}
 {% endblock body %}
