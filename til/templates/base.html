@@ -75,6 +75,9 @@
         <div class="w-full">
           <textarea class="border-2 border-blue-500 my-4 w-full js-post-text" placeholder="Enter your post" rows="3" maxlength="240" data-post-url="{% url 'feed:new_post' %}"></textarea>
         </div>
+        <div class="w-full">
+          <input type="file" class="border-2 border-blue-500 my-4 w-full js-post-image" accept="image/*">
+        </div>
         <hr>
         <div class="ml-auto">
           <button class="bg-blue-500 text-white font-bold rounded hover:bg-gray-500 hover:text-white py-1 px-3 inline-flex items-center text-m mt-4 js-submit" type="button">

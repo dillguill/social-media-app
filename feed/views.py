@@ -2,6 +2,7 @@ from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.core.files.storage import default_storage
 
 from followers.models import Follower
 
@@ -43,7 +44,7 @@ class PostDetailView(DetailView):
 class CreateNewPost(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "feed/create.html"
-    fields = ['text']
+    fields = ['text', 'image']
     success_url = "/"
 
     def dispatch(self, request, *args, **kwargs):
@@ -57,10 +58,10 @@ class CreateNewPost(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-
         post = Post.objects.create(
             text=request.POST.get("text"),
             author=request.user,
+            image=request.FILES.get("image")
         )
 
         return render(

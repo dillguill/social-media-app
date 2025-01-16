@@ -1,12 +1,14 @@
 {% load thumbnail %}
 
-<!-- component is from https://tailwindcomponents.com/component/post-artical -->
 <div class="max-w-4xl px-10 my-4 py-6 bg-white rounded-lg shadow-md" style='width: 50rem'>
     <div class="flex justify-between items-center">
         <span class="font-light text-gray-600">{{ post.date|date:"F j, Y, g:i:a" }}</span>
     </div>
     <div class="mt-2">
         <p class="mt-2 text-gray-600">{{ post.text }}</p>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image" class="mt-2">
+        {% endif %}
     </div>
     <div class="flex justify-between items-center mt-4">
         {% if show_detail_link %}
