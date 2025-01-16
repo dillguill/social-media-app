@@ -8,7 +8,7 @@ from followers.models import Follower
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
-from .forms import UserUpdateForm, PasswordUpdateForm
+from .forms import UserUpdateForm, PasswordUpdateForm, ThumbnailUpdateForm
 
 class ProfileDetailView(DetailView):
     http_method_names = ["get", "post"]
@@ -31,6 +31,7 @@ class ProfileDetailView(DetailView):
             context['you_follow'] = Follower.objects.filter(following=user, followed_by=self.request.user).exists()
         context['user_update_form'] = UserUpdateForm(instance=user)
         context['password_update_form'] = PasswordUpdateForm()
+        context['thumbnail_update_form'] = ThumbnailUpdateForm(instance=user.profile)
         return context
 
     def post(self, request, *args, **kwargs):
@@ -50,9 +51,15 @@ class ProfileDetailView(DetailView):
                     return redirect('profiles:detail', username=user.username)
                 else:
                     password_update_form.add_error('old_password', 'Old password is incorrect')
+        elif 'update_thumbnail' in request.POST:
+            thumbnail_update_form = ThumbnailUpdateForm(request.POST, request.FILES, instance=user.profile)
+            if thumbnail_update_form.is_valid():
+                thumbnail_update_form.save()
+                return redirect('profiles:detail', username=user.username)
         context = self.get_context_data()
         context['user_update_form'] = user_update_form
         context['password_update_form'] = password_update_form
+        context['thumbnail_update_form'] = thumbnail_update_form
         return self.render_to_response(context)
 
 

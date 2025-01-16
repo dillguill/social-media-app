@@ -1,6 +1,7 @@
 # filepath: /Users/Dillon/GitHub/Udemy Bootcamp/Django 201/profiles/forms.py
 from django import forms
 from django.contrib.auth.models import User
+from .models import Profile
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -19,3 +20,8 @@ class PasswordUpdateForm(forms.Form):
 
         if new_password != confirm_password:
             raise forms.ValidationError("New password and confirm password do not match.")
+
+class ThumbnailUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['image']
