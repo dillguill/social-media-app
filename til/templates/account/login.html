@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth account %}
+{% block head_title %}
+{% trans "Login" %}
+{% endblock head_title %}
+{% block content %}
+    
+    <div class="relative py-3 sm:w-96 mx-auto text-center">
+      <span class="text-2xl">Login to your account</span>
+      <div class="mt-4 bg-white shadow-md rounded-lg text-left">
+        <div class="px-8 py-6 ">
+          <form method="post">
+            {% csrf_token %}
+            <label class="block font-semibold"> {% trans "Email" %} </label>
+            <input type="text" name="login" placeholder="{% trans "Email" %}" class="border w-full h-12 px-3 py-2 mt-2 hover:outline-none focus:outline-none focus:ring-blue-500 focus:ring-1 rounded-md">
+            {% if form.login.errors %}
+                <p class="text-red-500">{{ form.login.errors }}</p>
+            {% endif %}
+            <label class="block mt-3 font-semibold"> {% trans "Password" %} </label>
+            <input type="password" name="password" placeholder="{% trans "Password" %}" class="border w-full h-12 px-3 py-2 mt-2 hover:outline-none focus:outline-none focus:ring-blue-500 focus:ring-1 rounded-md">
+            {% if form.password.errors %}
+            <p class="text-red-500">{{ form.password.errors }}</p>
+            {% endif %}
+            <div class="flex justify-between items-baseline">
+                <button type="submit" class="my-3 bg-blue-500 text-white font-bold rounded hover:bg-gray-600 shadow-md py-2 px-6 inline-flex items-center">
+                    {% trans "Login" %}
+                </button>
+                <a href="{% url 'account_reset_password' %}" class="text-sm text-blue-500 hover:underline">
+                    {% trans "Forgot password?" %}
+                </a>
+            </div>
+            {% if request.GET.error == '1' %}
+            <p class="text-red-500">Invalid email or password. Please try again.</p>
+            {% endif %}
+          </form>
+          <p class="mt-4 text-sm text-gray-600">If you don't have an account, <a href="{% url 'account_signup' %}" class="text-[#0284c7] hover:underline">sign up here</a>.</p>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
